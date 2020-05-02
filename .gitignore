@@ -1,0 +1,31 @@
+# production
+/dist
+
+# misc
+.DS_Store
+npm-debug.log*
+yarn-error.log
+
+# WebStorm
+.idea
+.vs
+
+# visual studio code
+.history
+*.log
+
+# umi
+.umi
+.umi-production
+
+package-lock.json
+
+# dependencies
+/node_modules
+/npm-debug.log*
+/yarn-error.log
+/yarn.lock
+/package-lock.json
+
+# dev
+functions
