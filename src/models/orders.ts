@@ -1,10 +1,11 @@
 import {Reducer} from 'redux';
 import {Effect} from '@/models/connect';
-import {fetchList,fetchRemove,fetchCreate,fetchUpdate} from '@/services/order';
+import {fetchList,fetchRemove,fetchCreate,fetchUpdate,fetchSerOrder,fetchOrder} from '@/services/order';
 import {formatTime} from '@/utils/utils';
 
 export interface IOrderModelState {
   list: IOrder[];//IOrder类型的数组
+  orderList:any[];//服务器订单列表
 }
 
 //订单类型接口定义
@@ -27,15 +28,19 @@ export interface IOrderModel{
     fetchRemove:Effect;
     fetchCreate:Effect;
     fetchUpdate:Effect;
+    fetchSerOrder:Effect;
+    fetchOrder:Effect;
   };
   reducers:{
-    saveList:Reducer
+    saveList:Reducer;
+    getOrder:Reducer;
   }
 }
 
 const OrderModel:IOrderModel = {
   namespace:'order',
   state:{
+    orderList:[],
     list:[],
   },
   effects:{
@@ -76,13 +81,34 @@ const OrderModel:IOrderModel = {
         callback&&callback();
       }
     },
-
+    *fetchSerOrder({payload,callback},{call}){
+      const response = yield call(fetchSerOrder,payload);
+      if(response&&response.code===200){
+        callback&&callback();
+      }
+    },
+    *fetchOrder({payload,callback},{call,put}){
+      const response = yield call(fetchOrder,payload);
+      if(response&&response.success){
+        callback&&callback(response);
+        yield put({
+          type:'getOrder',
+          payload:payload.data
+        })
+      }
+    }
   },
   reducers:{
     saveList(state,{payload}){
       return{
         ...state,
-        list:payload 
+        list:payload
+      }
+    },
+    getOrder(state,{payload}){
+      return{
+        ...state,
+        orderList:payload
       }
     }
   }

@@ -13,3 +13,7 @@ export function setCookie(name: string, value: string | object) {
 export function removeCookie(name?: string) {
   remove(name || cookieKey);
 }
+
+export function getToken(token='token'){
+  return localStorage.getItem('token');
+}

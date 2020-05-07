@@ -3,7 +3,7 @@ import router from 'umi/router';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { AJAX_DEFAULT_CONFIG } from '@/config';
-import { getCookie } from '@/utils/cookie';
+import { getCookie,getToken } from '@/utils/cookie';
 import { message } from 'antd';
 
 Axios.defaults.timeout = AJAX_DEFAULT_CONFIG.timeout;
@@ -16,6 +16,11 @@ function requestSuccess(config) {
   const cookie = getCookie();
   if (cookie) {
     config.headers['Token'] = cookie;
+  }
+  //设置token
+  const token = getToken();
+  if(token){
+    config.headers['Authorization'] = token;//设置jwt请求头
   }
   return config;
 }

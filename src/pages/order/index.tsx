@@ -30,6 +30,16 @@ const OrderPage: React.FC<any> = props => {
       type:'order/fetchList',
       payload:{page:1,limit:50}
     })
+
+    dispatch({
+      type:'order/fetchSerOrder',
+      payload:{orderStatus:0}
+    });
+
+    dispatch({
+      type:'order/fetchOrder',
+      payload:{orderStatus:0}
+    })
   }
 
   const handlerConfirmRemove = data=>{
@@ -130,8 +140,8 @@ const OrderPage: React.FC<any> = props => {
       key:'action',
       render:(text,record)=>(
         <div className='table-action'>
-          <Button 
-          size='small' 
+          <Button
+          size='small'
           type='danger'
           onClick={()=>{
             handlerConfirmRemove(record)
@@ -140,8 +150,8 @@ const OrderPage: React.FC<any> = props => {
             删除
           </Button>
 
-          <Button 
-          size='small' 
+          <Button
+          size='small'
           type='primary'
           onClick={()=>{
             console.log(record);
@@ -159,7 +169,7 @@ const OrderPage: React.FC<any> = props => {
     return(
       <Table loading={loading} data={list}  columns={col} onChange={handleTableChange}></Table>
     )
-  },[props.list,props.loading]);  
+  },[props.list,props.loading]);
 
   return(
     <React.Fragment>

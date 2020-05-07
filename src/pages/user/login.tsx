@@ -15,6 +15,7 @@ interface IProps {
   dispatch: (args: any) => void;
 }
 
+//@ts-ignore
 @connect(({ login, loading }:ConnectState) => {
   return ({
     loginType: login.type,

@@ -28,3 +28,14 @@ export async function fetchRemove(orderId) {
 export async function fetchUpdate(data) {
   return Put('orders/update', data);
 }
+
+//
+export async function fetchSerOrder(payload){
+  return Get('/orderCount', payload);
+}
+
+//本地egg服务器接口
+
+export async function fetchOrder(payload){
+  return Get('/order',payload);
+}

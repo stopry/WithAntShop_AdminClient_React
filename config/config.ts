@@ -57,12 +57,19 @@ export default {
   disableCSSModules: true,
   //orderApi 使用本地的 nodejs 服务
   proxy:{
-    '/orderApi':{
+    // '/orderApi':{
+    //   target:'http://127.0.0.1:7001',
+    //   changeOrigin: true,
+    //   pathRewrite: { 
+    //     // '^/api' : '' 
+    //   }
+    // },
+    '/api':{
       target:'http://127.0.0.1:7001',
-      changeOrigin: true,
-      pathRewrite: { 
-        // '^/api' : '' 
-      }
+      // changeOrigin: true,
+      // pathRewrite: { 
+      //   // '^/api' : '' 
+      // }
     }
   },
   //别名

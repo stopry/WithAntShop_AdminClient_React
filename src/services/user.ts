@@ -2,7 +2,7 @@ import { Get, Post, Delete, Put } from '@/utils/request';
 
 // 用户登录
 export async function fetchLogin(data) {
-  return Post('users/login', data);
+  return Post('admin/login', data);
 }
 
 // 退出登录
