@@ -49,6 +49,7 @@ const Login: ILoginModel = {
         const { token } = response.data;
         if (token) {
           setCookie('', token);
+          localStorage.setItem('token',`Bearer ${token}`);
         }
         const urlParams = new URL(window.location.href);
         const params = parseQuery();

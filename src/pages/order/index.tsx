@@ -9,6 +9,7 @@ import styles from './index.less'
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import OrderDrawer,{TType} from './components/order-drawer';
 import{IOrder} from '@/models/orders'
+import {formatTime} from '@/utils/utils';
 
 const confirm = Modal.confirm;
 
@@ -16,10 +17,12 @@ const OrderPage: React.FC<any> = props => {
   const dispatch = useDispatch();
 
   const [queryData, setQueryData] = React.useState<boolean>(false);
-  const {list,loading} = props;
+  const {list,loading,orderLoading,orderList} = props;
   const [visible,setVisible] = React.useState<boolean>(false);
   const [type,setType] = React.useState<TType>('create');
   const [currentOrder,setCurrentOrder] = React.useState<IOrder>({});
+
+  console.log(orderList,'dingddassasas')
 
   React.useEffect(()=>{
     getList()
@@ -31,16 +34,35 @@ const OrderPage: React.FC<any> = props => {
       payload:{page:1,limit:50}
     })
 
-    dispatch({
-      type:'order/fetchSerOrder',
-      payload:{orderStatus:0}
-    });
-
-    dispatch({
-      type:'order/fetchOrder',
-      payload:{orderStatus:0}
+    getOrderList({
+      orderStatus:0,
+      pageNum:1,
+      pageSize:20
     })
   }
+
+  const getOrderList = (payload)=>{
+    dispatch({
+      type:'order/fetchOrder',
+      payload
+    })
+  }
+
+
+
+  //删除订单
+  const confirmDeleteOrder = data=>{
+    confirm({
+      title:formatMessage({id:'app.order.remove-tips'}),
+      content:'确认删除吗?',
+      onOk(){
+        deleteOrder(data.id);
+      }
+    })
+  };
+  const deleteOrder = orderId=>{
+
+  };
 
   const handlerConfirmRemove = data=>{
     confirm({
@@ -117,27 +139,48 @@ const OrderPage: React.FC<any> = props => {
   const col = [
     {
       title:formatMessage({id:'app.order.username'}),
-      dataIndex:'username',
+      key:'userName',
+      dataIndex:'userName',
     },
     {
-      title:'余额',
-      dataIndex:'amount'
+      title:'金额',
+      key:'price',
+      dataIndex:'price'
     },
     {
       title:'商品',
-      dataIndex:'productor',
+      key:'name',
+      dataIndex:'name',
+      render:(text,recode)=>(
+        <span>
+          {recode.goods.name}
+        </span>
+      )
     },
     {
       title:'描述',
-      dataIndex:'remark'
+      key:'desc',
+      dataIndex:'desc',
+      render:(text,recode)=>(
+        <span>
+          {recode.goods.desc}
+        </span>
+      )
     },
     {
       title:'创建时间',
-      dataIndex:'createTime'
+      key:'createTime',
+      dataIndex:'createTime',
+      render:(text,recode)=>(
+        <span>
+          {formatTime(recode.createTime)}
+        </span>
+      )
     },
     {
       title:'操作',
       key:'action',
+      dataIndex:'action',
       render:(text,record)=>(
         <div className='table-action'>
           <Button
@@ -167,9 +210,9 @@ const OrderPage: React.FC<any> = props => {
 
   const table = React.useMemo(()=>{
     return(
-      <Table loading={loading} data={list}  columns={col} onChange={handleTableChange}></Table>
+      <Table loading={orderLoading} rowKey={recode=>recode._id} data={orderList}  columns={col} onChange={handleTableChange}></Table>
     )
-  },[props.list,props.loading]);
+  },[props.orderList,props.orderLoading]);
 
   return(
     <React.Fragment>
@@ -198,7 +241,9 @@ const OrderPage: React.FC<any> = props => {
 export default connect(({ order, loading }: ConnectState) => {
   return({
     list: order.list,
+    orderList:order.orderList,//服务器订单列表
     loading: loading.effects['order/fetchList'],
+    orderLoading: loading.effects['order/fetchOrder'],
   })
 })(OrderPage);
 

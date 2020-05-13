@@ -93,13 +93,14 @@ const OrderModel:IOrderModel = {
         callback&&callback(response);
         yield put({
           type:'getOrder',
-          payload:payload.data
+          payload:response.data.list
         })
       }
     }
   },
   reducers:{
     saveList(state,{payload}){
+      console.log(payload,'geren ')
       return{
         ...state,
         list:payload
@@ -108,9 +109,9 @@ const OrderModel:IOrderModel = {
     getOrder(state,{payload}){
       return{
         ...state,
-        orderList:payload
+        orderList:{list:payload,total:20}
       }
-    }
+    },
   }
 }
 

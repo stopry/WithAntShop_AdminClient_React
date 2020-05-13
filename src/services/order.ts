@@ -37,5 +37,5 @@ export async function fetchSerOrder(payload){
 //本地egg服务器接口
 
 export async function fetchOrder(payload){
-  return Get('/order',payload);
+  return Get('admin/order',payload);
 }
