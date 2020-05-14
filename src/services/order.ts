@@ -29,13 +29,20 @@ export async function fetchUpdate(data) {
   return Put('orders/update', data);
 }
 
-//
-export async function fetchSerOrder(payload){
-  return Get('/orderCount', payload);
-}
 
 //本地egg服务器接口
 
+//获取订单
 export async function fetchOrder(payload){
   return Get('admin/order',payload);
+}
+//删除订单
+export async function fetchDeleteOrder(payload){
+  return Get('admin/deleteOrder',payload);
+}
+export async function fetchUpdateOrder(payload){
+  return Post('admin/updateOrder',payload);
+}
+export async function fetchCreateOrder(payload){
+  return Post('admin/createOrder',payload);
 }

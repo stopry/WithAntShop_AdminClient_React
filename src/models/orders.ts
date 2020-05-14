@@ -1,6 +1,6 @@
 import {Reducer} from 'redux';
 import {Effect} from '@/models/connect';
-import {fetchList,fetchRemove,fetchCreate,fetchUpdate,fetchSerOrder,fetchOrder} from '@/services/order';
+import {fetchList,fetchRemove,fetchCreate,fetchUpdate,fetchOrder,fetchDeleteOrder,fetchUpdateOrder,fetchCreateOrder} from '@/services/order';
 import {formatTime} from '@/utils/utils';
 
 export interface IOrderModelState {
@@ -10,12 +10,21 @@ export interface IOrderModelState {
 
 //订单类型接口定义
 export interface IOrder{
-  username?:string;//用户名
-  amount?:string;//金额
-  productor?:string;//产品
-  remark?:string;//备注
+  userName?:string;//用户名
+  price?:Number;//价格
+  goods?:{
+    name?:string;//产品名
+    desc?:string;//备注
+    img?:string;
+    amount?:Number;
+  }
   createTime?:string;//创建时间
-  id?:string;//id
+  remark?:string;
+  status?:Number;
+  orderId?:string;
+  goodsId?:string;
+  userId?:string;
+  _id?:string;//id
 }
 
 export interface IOrderModel{
@@ -28,8 +37,10 @@ export interface IOrderModel{
     fetchRemove:Effect;
     fetchCreate:Effect;
     fetchUpdate:Effect;
-    fetchSerOrder:Effect;
     fetchOrder:Effect;
+    fetchDeleteOrder:Effect;
+    fetchUpdateOrder:Effect;
+    fetchCreateOrder:Effect;
   };
   reducers:{
     saveList:Reducer;
@@ -81,12 +92,6 @@ const OrderModel:IOrderModel = {
         callback&&callback();
       }
     },
-    *fetchSerOrder({payload,callback},{call}){
-      const response = yield call(fetchSerOrder,payload);
-      if(response&&response.code===200){
-        callback&&callback();
-      }
-    },
     *fetchOrder({payload,callback},{call,put}){
       const response = yield call(fetchOrder,payload);
       if(response&&response.success){
@@ -95,6 +100,30 @@ const OrderModel:IOrderModel = {
           type:'getOrder',
           payload:response.data.list
         })
+      }
+    },
+    *fetchDeleteOrder({payload,callback,filacCllback},{call,put}){
+      const response = yield call(fetchDeleteOrder,payload);
+      if(response&&response.success){
+        callback&&callback(response);
+      }else{
+        filacCllback&&filacCllback();
+      }
+    },
+    *fetchUpdateOrder({payload,callback,filacCllback},{call,put}){
+      const response = yield call(fetchUpdateOrder,payload);
+      if(response&&response.success){
+        callback&&callback(response);
+      }else{
+        filacCllback&&filacCllback();
+      }
+    },
+    *fetchCreateOrder({payload,callback,filacCllback},{call,put}){
+      const response = yield call(fetchCreateOrder,payload);
+      if(response&&response.success){
+        callback&&callback(response);
+      }else{
+        filacCllback&&filacCllback();
       }
     }
   },
