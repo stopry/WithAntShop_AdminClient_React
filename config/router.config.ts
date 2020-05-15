@@ -132,14 +132,14 @@ export default [
       },
 
       {
-        name: '商品管理',
+        name: 'goods',
         icon: 'shopping-cart',
         path: '/goods',
         routes:[
           {
             path: '/goods/index',
-            name:"商品列表",
-            // component: './goods/index',
+            name:"list",
+            component: './goods/index',
           }
         ]
       },

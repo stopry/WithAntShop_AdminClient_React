@@ -2,14 +2,13 @@ import React from 'react';
 import {Form,Input,message} from 'antd';
 import {FormComponentProps} from 'antd/es/form';
 import DrawerWrapper from '@/components/drawer-wrapper';
-import{IOrder} from '@/models/orders'
 
 export type TType = 'create'|'update';//声明操作订单类型 创建或更新
 
 //定义数据接口类型 继承antd form组件的属性
 interface IProps extends FormComponentProps{
   type?:TType;
-  currentOrder?:IOrder;//当前订单
+  currentGoods?:any;//当前订单
   visible?:boolean;
   onClose?:()=>void;
   onSubmit?:(values)=>void;
@@ -17,15 +16,15 @@ interface IProps extends FormComponentProps{
 
 const {TextArea} = Input;
 
-const OrderDrawer:React.FC<IProps> = props=>{
-  const {visible,onClose,onSubmit,form,type,currentOrder} = props;
+const GoodsDrawer:React.FC<IProps> = props=>{
+  const {visible,onClose,onSubmit,form,type,currentGoods} = props;
 
   const {getFieldDecorator} = form;
   const [title,setTitle] = React.useState<string>('');//编辑框标题
 
   //useEffect 监听props.type的值改变编辑框的标题
   React.useEffect(()=>{
-    setTitle(type==='create'?'添加订单':'更新订单');
+    setTitle(type==='create'?'添加商品':'更新商品');
   },[props.type]);
 
   //清空表单
@@ -41,15 +40,12 @@ const OrderDrawer:React.FC<IProps> = props=>{
       if(!error){
         const data = {...values};
         if(type==='update'){
-          data._id = currentOrder._id;
+          data._id = currentGoods._id;
         }else{
           message.warn('功能完善中');
           return;
         }
-        data.goods.img = currentOrder.goods.img;
-        data.goods.amount = currentOrder.goods.amount;
-        Object.assign(currentOrder,data);
-        onSubmit&&onSubmit(currentOrder);//执行传入的onSubmit方法
+        onSubmit&&onSubmit(data);//执行传入的onSubmit方法
       }
     })
   }
@@ -75,23 +71,23 @@ const OrderDrawer:React.FC<IProps> = props=>{
       title={title}
     >
       <Form>
-        <Form.Item {...formItemLayout} label="用户名">
+        <Form.Item {...formItemLayout} label="商品名称">
           {
-            getFieldDecorator('userName',{
-              initialValue:currentOrder.userName,
+            getFieldDecorator('title',{
+              initialValue:currentGoods.title,
               rules:[
                 {
                   required:true,
-                  message:'用户名不能为空',
+                  message:'商品名不能为空',
                 }
               ]
-            })(<Input placeholder='请输入用户名'/>)
+            })(<Input placeholder='请输入商品名称'/>)
           }
         </Form.Item>
         <Form.Item {...formItemLayout} label="价格">
           {
             getFieldDecorator('price',{
-              initialValue:currentOrder.price,
+              initialValue:currentGoods.price,
               rules:[
                 {
                   required:true,
@@ -101,23 +97,23 @@ const OrderDrawer:React.FC<IProps> = props=>{
             })(<Input placeholder='请输入价格'/>)
           }
         </Form.Item>  
-        <Form.Item {...formItemLayout} label="产品">
+        <Form.Item {...formItemLayout} label="库存">
           {
-            getFieldDecorator('goods.name',{
-              initialValue:currentOrder.goods&&currentOrder.goods.name,
+            getFieldDecorator('stock',{
+              initialValue:currentGoods.stock,
               rules:[
                 {
                   required:true,
-                  message:'产品不能为空'
+                  message:'库存不能为空'
                 }
               ]
-            })(<Input placeholder='请输选择产品'/>)
+            })(<Input placeholder='请输输入库存'/>)
           }
         </Form.Item>  
         <Form.Item {...formItemLayout} label="描述">
           {
-            getFieldDecorator('goods.desc',{
-              initialValue:currentOrder.goods&&currentOrder.goods.desc,
+            getFieldDecorator('des',{
+              initialValue:currentGoods.des,
               rules:[
                 {
                   required:false,
@@ -127,17 +123,17 @@ const OrderDrawer:React.FC<IProps> = props=>{
             })(<Input placeholder='请填写备注'/>)
           }
         </Form.Item>  
-        <Form.Item {...formItemLayout} label="创建时间">
+        <Form.Item {...formItemLayout} label="邮费">
           {
-            getFieldDecorator('createTime',{
-              initialValue:currentOrder.createTime,
+            getFieldDecorator('express',{
+              initialValue:currentGoods.express,
               rules:[
                 {
                   required:false,
-                  message:'创建时间'
+                  message:'邮费'
                 }
               ]
-            })(<Input disabled placeholder='创建时间'/>)
+            })(<Input placeholder='邮费'/>)
           }
         </Form.Item>  
       </Form>
@@ -145,8 +141,8 @@ const OrderDrawer:React.FC<IProps> = props=>{
     </DrawerWrapper>
   ) 
 }
-OrderDrawer.defaultProps = {
+GoodsDrawer.defaultProps = {
   visible:false,
-  currentOrder:{},
+  currentGoods:{},
 }
-export default Form.create<IProps>()(OrderDrawer);
+export default Form.create<IProps>()(GoodsDrawer);

@@ -3,6 +3,7 @@ import router from 'umi/router';
 import { Form, Input, Icon, Button } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
+import {withRouter} from 'react-router-dom'
 
 interface IProps extends FormComponentProps {
   prefixCls?: string;
@@ -30,7 +31,8 @@ const PasswordResetForm: React.FC<IProps> = props => {
   };
 
   const handleReturnLogin = () => {
-    router.push('/user/login');
+    window.location.href = '/user/login'
+    // router.push('/user/login');
   };
 
   return (
@@ -120,5 +122,6 @@ const PasswordResetForm: React.FC<IProps> = props => {
 PasswordResetForm.defaultProps = {
   loading: false,
 };
+
 
 export default Form.create<IProps>()(PasswordResetForm);

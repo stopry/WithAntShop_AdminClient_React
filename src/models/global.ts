@@ -14,7 +14,8 @@ export interface IGlobalModel {
   },
   reducers: {
     saveNotices: Reducer<any>;
-  }
+  },
+  subscriptions:any
 }
 
 const GlobalModel: IGlobalModel = {
@@ -50,6 +51,26 @@ const GlobalModel: IGlobalModel = {
         ...state,
         notices: payload
       };
+    }
+  },
+  subscriptions:{
+    setup({dispatch,history}:any){
+      console.log(dispatch,history);
+      return history.listen(({pathname,query}:any)=>{
+        console.log(pathname,query,'监听222');
+        // if(pathname.indexOf('article')>-1){
+        // if(pathname.split('/').length>3){
+        //   dispatch({
+        //     type:'fetchLogout',
+        //     payload:true
+        //   })
+        // }else{
+        //   dispatch({
+        //     type:'fetchLogout',
+        //     payload:false
+        //   })
+        // }
+      })
     }
   }
 };

@@ -7,6 +7,8 @@ import PageLoading from '@/components/page-loading';
 import Exception403 from '@/pages/exception/403';
 import { ConnectProps, ConnectState } from '@/models/connect';
 import { ISidebarMenuProps } from '@/components/sidebar-menu';
+// import {withRouter} from 'umi'
+import {withRouter} from 'react-router-dom'
 
 interface IProps extends Required<ConnectProps>, ISidebarMenuProps {
   policy: Policy;
@@ -65,8 +67,8 @@ AuthComponent.defaultProps = {
   policy: null
 };
 
-export default connect(({ menu, user, loading }: ConnectState) => ({
+export default withRouter(connect(({ menu, user, loading }: ConnectState) => ({
   policy: user.policy,
   routerData: menu.routerData,
   loading: loading['user/fetchCurrent']
-}))(AuthComponent);
+}))(AuthComponent)) ;

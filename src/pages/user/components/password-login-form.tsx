@@ -95,11 +95,11 @@ const PasswordLoginForm: React.FC<IProps> = (props) => {
         >
           <FormattedMessage id="app.login.login" />
         </Button>
-        <div className={`${prefixCls}__switch`}>
+        {/* <div className={`${prefixCls}__switch`}>
           <span onClick={handleChangeLoginType}>
             <FormattedMessage id="app.login.login-type-sms" />
           </span>
-        </div>
+        </div> */}
       </FormItem>
     </Form>
   )

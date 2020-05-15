@@ -25,7 +25,8 @@ export interface ConnectState {
   userGroup: IUserGroupModelState;
   action: IActionModelState;
   policy: IPolicyModelState;
-  order:IOrderModelState
+  order:IOrderModelState;
+  goods:any;
 }
 
 export {

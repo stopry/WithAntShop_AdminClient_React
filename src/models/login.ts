@@ -8,6 +8,7 @@ import { fetchLogin, fetchLogout, fetchResetPassword } from '@/services/user';
 import { parseQuery } from '@/utils/path-tools';
 import { setCookie, removeCookie } from '@/utils/cookie';
 import { STORAGE_KEY_DEFAULT_CONFIG } from '@/config';
+import router from 'umi/router';
 
 export type TLoginType = 'password' | 'sms';
 
@@ -41,7 +42,7 @@ const Login: ILoginModel = {
     type: store.get(loginType, 'password'),
   },
   effects: {
-    *fetchLogin({ payload }, { call, put }) {
+    *fetchLogin({ payload,callback }, { call, put }) {
       console.log(payload);
       const response = yield call(fetchLogin, payload);
       // login success
@@ -67,7 +68,9 @@ const Login: ILoginModel = {
             return;
           }
         }
-        yield put(routerRedux.replace(redirect || '/'));
+        callback&&callback();
+        window.location.href = redirect||'/';
+        // yield put(routerRedux.replace(redirect || '/'));
       }
     },
     *fetchCaptcha({ payload }, { call, put }) {
@@ -88,14 +91,15 @@ const Login: ILoginModel = {
 
       // redirect
       if (window.location.pathname !== '/user/login') {
-        yield put(
-          routerRedux.replace({
-            pathname: '/user/login',
-            search: stringify({
-              redirect: window.location.href,
-            }),
-          }),
-        );
+        // yield put(
+        //   routerRedux.replace({
+        //     pathname: '/user/login',
+        //     search: stringify({
+        //       redirect: window.location.href,
+        //     }),
+        //   }),
+        // );
+        window.location.href = '/user/login'+`?redirect=${window.location.href}`||'/';
       }
     },
     *fetchResetPassword({ payload }, { call }) {

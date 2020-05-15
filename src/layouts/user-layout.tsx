@@ -48,7 +48,7 @@ const UserLayout: React.FC<IProps> = props => {
               </div>
               <div className={`${prefixCls}__header`}>
                 <img src={logo} alt="logo" />
-                <h2>React Admin Template</h2>
+                <h2>WithAnt Admin</h2>
               </div>
               <div className={`${prefixCls}__title`}>
                 <h2>{title}</h2>

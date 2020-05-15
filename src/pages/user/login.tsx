@@ -7,6 +7,8 @@ import { ConnectState } from '@/models/connect';
 import PasswordLoginForm from './components/password-login-form';
 import SMSLoginForm from './components/sms-login-form';
 import './login.less';
+import {withRouter} from 'react-router-dom'
+import router from 'umi/router';
 
 interface IProps {
   prefixCls?: string;
@@ -16,12 +18,12 @@ interface IProps {
 }
 
 //@ts-ignore
-@connect(({ login, loading }:ConnectState) => {
-  return ({
-    loginType: login.type,
-    loading: loading.effects['login/fetchLogin'],
-  })
-})
+// @connect(({ login, loading }:ConnectState) => {
+//   return ({
+//     loginType: login.type,
+//     loading: loading.effects['login/fetchLogin'],
+//   })
+// })
 class LoginPage extends React.Component<IProps, any> {
 
   static defaultProps = {
@@ -37,6 +39,17 @@ class LoginPage extends React.Component<IProps, any> {
     });
   };
 
+  componentDidMount () {
+    console.log('监听成功')
+  }
+
+  componentWillReceiveProps(nextProps){
+    let key = nextProps.match.params.key;
+    this.setState({
+        key:key
+    })
+  }
+
   handleChangeType = type => {
     const { dispatch } = this.props;
     const { loginType } = STORAGE_KEY_DEFAULT_CONFIG;
@@ -51,6 +64,7 @@ class LoginPage extends React.Component<IProps, any> {
 
   render() {
     const { prefixCls, loginType, loading } = this.props;
+    console.log(this.props,'这个页面的属性')
 
     return (
       <div className={prefixCls}>
@@ -77,9 +91,11 @@ class LoginPage extends React.Component<IProps, any> {
     );
   }
 }
-export default LoginPage;
-
-// export default connect(({ login, loading }: ConnectState) => ({
-//   loginType: login.type,
-//   loading: loading.effects['login/fetchLogin'],
-// }))(LoginPage);
+// export default LoginPage;
+// withRouter
+export default withRouter(
+  connect(({ login, loading }: ConnectState) => ({
+    loginType: login.type,
+    loading: loading.effects['login/fetchLogin'],
+  }))(LoginPage)
+);

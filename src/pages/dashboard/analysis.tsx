@@ -9,8 +9,14 @@
 import React from 'react';
 import IntroduceRow from './components/introduce-row';
 import SalesCard from './components/sales-card';
+import {withRouter} from 'react-router-dom'
 
 const AnalysisPage: React.FC = () => {
+
+  React.useEffect(()=>{
+    
+  })
+
   return (
     <div>
       <IntroduceRow />
@@ -19,4 +25,4 @@ const AnalysisPage: React.FC = () => {
   );
 };
 
-export default AnalysisPage;
+export default withRouter(AnalysisPage);

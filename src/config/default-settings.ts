@@ -16,6 +16,8 @@ export interface IDefaultSettings {
   title: string;
   // 公司名称
   company: string;
+  //作者
+  auther:string
 }
 
 const defaultSettings: IDefaultSettings = {
@@ -24,9 +26,10 @@ const defaultSettings: IDefaultSettings = {
     disableLocal: false,
   },
   fixedHeader: true,
-  title: 'SPORTS Admin',
+  title: 'WithAnt Admin',
   iconFontUrl: '',
-  company: 'st科技',
+  company: 'stopry',
+  auther:'809746561@qq.com'
 };
 
 export default defaultSettings;

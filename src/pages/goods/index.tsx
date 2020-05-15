@@ -7,60 +7,54 @@ import PageHeaderWrapper from '@/components/page-header-wrapper';
 import styles from './index.less'
 //formatMessage 作为方法调用  FormattedMessage 字符串获取
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
-import OrderDrawer,{TType} from './components/order-drawer';
-import{IOrder} from '@/models/orders'
+import GoodsDrawer,{TType} from './components/goods-drawer';
 import {formatTime} from '@/utils/utils';
 
 const confirm = Modal.confirm;
 
-const OrderPage: React.FC<any> = props => {
+const GoodsPage: React.FC<any> = props => {
   const dispatch = useDispatch();
 
   const [queryData, setQueryData] = React.useState<boolean>(false);
-  const {list,loading,orderLoading,orderList} = props;
+  const {goodsLoading,goodsList} = props;
   const [visible,setVisible] = React.useState<boolean>(false);
   const [type,setType] = React.useState<TType>('create');
-  const [currentOrder,setCurrentOrder] = React.useState<IOrder>({});
+  const [currentGoods,setCurrentGoods] = React.useState<any>({});
 
   React.useEffect(()=>{
     getList()
   },[queryData,setQueryData])
 
   const getList = ()=>{
-    // dispatch({
-    //   type:'order/fetchList',
-    //   payload:{page:1,limit:50}
-    // })
-
-    getOrderList({
-      orderStatus:0,
+    getGoodsList({
       pageNum:1,
       pageSize:20
     })
   }
 
-  const getOrderList = (payload)=>{
+  const getGoodsList = (payload)=>{
     dispatch({
-      type:'order/fetchOrder',
+      type:'goods/fetchGoods',
       payload
     })
   }
 
+  console.log(goodsList,'这里面的商品');
 
 
-  //删除订单
-  const confirmDeleteOrder = data=>{
+  //删除商品
+  const confirmDeleteGoods = data=>{
     confirm({
       title:formatMessage({id:'app.order.remove-tips'}),
       content:'确认删除吗?',
       onOk(){
-        deleteOrder(data._id); 
+        deleteGoods(data._id); 
       }
     })
   };
-  const deleteOrder = _id=>{
+  const deleteGoods = _id=>{
     dispatch({
-      type:'order/fetchDeleteOrder',
+      type:'order/fetchDeleteGoods',
       payload:{_id},
       callback:(res)=>{
         message.success('删除成功');
@@ -79,24 +73,24 @@ const OrderPage: React.FC<any> = props => {
 
   const showCreateView = ()=>{
     setType('create');
-    setCurrentOrder({});
-    console.log(currentOrder,'新增订购')
+    setCurrentGoods({});
+    console.log(currentGoods,'新增订购')
     setVisible(true);
   }
 
-  const showUpdateView = order =>{
+  const showUpdateView = goods =>{
     setType('update');
-    console.log(order,'当前啊啊')
-    setCurrentOrder(order);
-    console.log(currentOrder,'当前订购')
+    console.log(goods,'当前啊啊')
+    setCurrentGoods(goods);
+    console.log(currentGoods,'当前订购')
     setVisible(true);
   }
 
-  const handleSubmit = order=>{
+  const handleSubmit = goods=>{
     if(type==='create'){//创建一条订单
       dispatch({
-        type:'order/fetchCreateOrder',
-        payload:order,
+        type:'goods/fetchCreateGoods',
+        payload:goods,
         callback:()=>{
           setVisible(false);
           message.success('创建成功');
@@ -105,8 +99,8 @@ const OrderPage: React.FC<any> = props => {
       })
     }else if(type==='update'){//更新一条订单
       dispatch({
-        type:'order/fetchUpdateOrder',
-        payload:order,
+        type:'goods/fetchUpdateGoods',
+        payload:goods,
         callback:()=>{
           setVisible(false);
           message.success('更新成功');
@@ -123,9 +117,9 @@ const OrderPage: React.FC<any> = props => {
 
   const col = [
     {
-      title:formatMessage({id:'app.order.username'}),
-      key:'userName',
-      dataIndex:'userName',
+      title:'商品名称',
+      key:'title',
+      dataIndex:'title',
     },
     {
       title:'价格',
@@ -133,32 +127,27 @@ const OrderPage: React.FC<any> = props => {
       dataIndex:'price'
     },
     {
-      title:'商品',
-      key:'name',
-      dataIndex:'name',
+      title:'库存',
+      key:'stock',
+      dataIndex:'stock',
       render:(text,recode)=>(
         <span>
-          {recode.goods.name}
+          {recode.stock}
         </span>
       )
     },
     {
       title:'描述',
-      key:'desc',
-      dataIndex:'desc',
-      render:(text,recode)=>(
-        <span>
-          {recode.goods.desc}
-        </span>
-      )
+      key:'des',
+      dataIndex:'des',
     },
     {
-      title:'创建时间',
-      key:'createTime',
-      dataIndex:'createTime',
+      title:'邮费',
+      key:'express',
+      dataIndex:'express',
       render:(text,recode)=>(
         <span>
-          {formatTime(recode.createTime)}
+          {recode.express?'￥'+recode.express:'免邮'}
         </span>
       )
     },
@@ -172,7 +161,7 @@ const OrderPage: React.FC<any> = props => {
           size='small'
           type='danger'
           onClick={()=>{
-            confirmDeleteOrder(record)
+            confirmDeleteGoods(record)
           }}
           >
             删除
@@ -195,27 +184,27 @@ const OrderPage: React.FC<any> = props => {
 
   const table = React.useMemo(()=>{
     return(
-      <Table loading={orderLoading} rowKey={recode=>recode._id} data={orderList}  columns={col} onChange={handleTableChange}></Table>
+      <Table loading={goodsLoading} rowKey={recode=>recode._id} data={goodsList}  columns={col} onChange={handleTableChange}></Table>
     )
-  },[props.orderList,props.orderLoading]);
+  },[props.goodsList,props.goodsLoading]);
 
   return(
     <React.Fragment>
       <PageHeaderWrapper
-        title={`${formatMessage({id:'app.order.page-title'})}`}
+        title={`商品管理`}
         extra={[
           <Button key="1" type="primary" onClick={showCreateView}>
-            <FormattedMessage id="app.order.add-order" />
+            {`新增商品`}
           </Button>,
         ]}
       >
       </PageHeaderWrapper>
       <Card bordered={false}>{table}</Card>
 
-      <OrderDrawer
+      <GoodsDrawer
         type={type}
         visible={visible}
-        currentOrder={currentOrder}
+        currentGoods={currentGoods}
         onSubmit={handleSubmit}
         onClose={handleClose}
       />
@@ -223,13 +212,11 @@ const OrderPage: React.FC<any> = props => {
   )
 };
 
-export default connect(({ order, loading }: ConnectState) => {
+export default connect(({ goods, loading }: ConnectState) => {
   return({
-    list: order.list,
-    orderList:order.orderList,//服务器订单列表
-    loading: loading.effects['order/fetchList'],
-    orderLoading: loading.effects['order/fetchOrder'],
+    goodsList:goods.goodsList,//服务器订单列表
+    goodsLoading: loading.effects['goods/fetchGoods'],
   })
-})(OrderPage);
+})(GoodsPage);
 
 // export default OrderPage;

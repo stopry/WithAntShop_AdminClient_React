@@ -47,6 +47,7 @@
     "react-dom": "^16.8.6",
     "react-lazyload": "^2.6.5",
     "react-media-hook2": "^1.0.5",
+    "react-router-dom": "^5.2.0",
     "rollbar": "^2.4.4",
     "rxjs": "^6.5.3",
     "scheduler": "^0.18.0",

@@ -19,6 +19,8 @@ export default {
   'menu.permission.policy-create': '新建权限策略',
   'menu.order': '订单管理',
   'menu.order.list': '订单列表',
+  'menu.goods.list': '商品列表',
+  'menu.goods': '商品管理',
   'menu.account': '账户管理',
   'menu.account.center': '个人中心',
   'menu.account.settings': '账户设置',

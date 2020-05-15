@@ -19,6 +19,8 @@ export default {
   'menu.permission.policy-create': 'Create Policies',
   'menu.order': 'Order',
   'menu.order.list': 'Order List',
+  'menu.goods.list': 'Goods List',
+  'menu.goods': 'Goods',
   'menu.account': 'Account',
   'menu.account.center': 'Account Center',
   'menu.account.settings': 'Account Settings',

@@ -12,6 +12,7 @@ import logo from '@/assets/logo.svg';
 import Context from './menu-context';
 import Header from './header';
 import './basic-layout.less';;
+import {withRouter} from 'umi'
 
 interface IProps extends Required<ConnectProps>, ISidebarMenuProps {
   prefixCls?: string;
@@ -93,8 +94,8 @@ BasicLayout.defaultProps = {
   prefixCls: 'lotus-basic-layout'
 };
 
-export default connect(({ menu, setting }: ConnectState) => ({
+export default withRouter(connect(({ menu, setting }: ConnectState) => ({
   menuData: menu.menuData,
   breadcrumbNameMap: menu.breadcrumbNameMap,
   setting
-}))(BasicLayout);
+}))(BasicLayout));

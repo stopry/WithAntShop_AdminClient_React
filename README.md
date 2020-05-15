@@ -1,10 +1,19 @@
-<p align="center">
-  <a href="https://github.com/ts-react/react-admin-template">
-    <img width="100" src="https://github.com/ts-react/react-admin-template/blob/gh-pages/assets/logo.svg">
-  </a>
-</p>
+<h1 align="center">WithAnt Admin Template</h1>
 
-<h1 align="center">React Admin Template</h1>
+# 前言
+
+学React已经有一段时间了，期间都是接触到的都是些概念性的东西和一些简单的demo示例。想要更加熟悉框架以及能够安全的运用在项目中，还需要真正的实战练习，无意中看到withAnt商店小程序，于是就用刚学的Umi,React,Antd-mobile照着写了起来。
+
+项目都是在利用业余时间写的，仅仅用于学习使用。
+
+项目中涉及到用户登陆，jwt token验证，商品管理，订单管理，其他一些使用mock数据的模板组件,并对webpack做了一些必要的优化配置。（目前真正与服务端交互的只有商品管理，订单管理）；
+
+此项目为后台数据管理界面，另外有基于Umi React Antd的用户客户端界面和基于node egg mongodb的服务端系统，此客户端和后台管理界面需要结合服务端使用，否出会出现找不到数据的异常。
+
+>[[服务端项目传送地址]](https://github.com/stopry/WithAntShop_Server_egg.git)<br/>
+[[用户客户端页面传送地址]](https://github.com/stopry/withantShop_react_client.git)
+
+__项目源码基于 GPL 协议，仅仅用于 Umi React 框架的学习，请勿作为商业用途。 请抵制一切盗版侵权行为，请尊重作者的劳动果实！__
 
 <p align="center">
   <a href="http://umijs.org">
@@ -62,19 +71,16 @@ npm install --global yarn
 
 **本地开发后端接口配置**
 
-使用`local-server.config.ts`配置文件
-
-内容如下:
-
-```
-export default {
-  baseURL: 'https://api.jiumao.com'
-};
-```
+代理地址
+proxy:{
+    '/api':{
+      target:'http://127.0.0.1:7001',
+    }
+  }
 
 ## 技术栈
 
-- 框架：React、Umi
+- 框架：React,Umi,Dva
 - 组件库：ant-design
 - 开发语言：TypeScript
 - Ajax 库：Axios
@@ -92,15 +98,6 @@ export default {
 
 > 系统采用手动配置路由的形式
 
-**相关字典**
-
-### icon
-
-> 配合[iconfont](https://www.iconfont.cn)使用
-
-- 参数类型: `string`
-- 参数描述: 左侧菜单的 Icon
-- 默认值: 无
 
 ### name
 
@@ -152,10 +149,6 @@ export default {
 - 参数类型: `boolean`
 - 参数描述: 用于隐藏不需要在菜单中展示的子路由
 - 默认值: false
-
-## API
-
-[nest-serve-starter](https://github.com/typescript-projects/nest-serve-starter) 正在开发中...
 
 ## 关于权限
 
@@ -243,11 +236,6 @@ export default {
 - [TypeScript-React-Starter](https://github.com/Microsoft/TypeScript-React-Starter)
 - [ant-design-pro](https://github.com/ant-design/ant-design-pro)
 
-## 最佳实践
-
-- [react-typescript-cheatsheet](https://github.com/sw-yx/react-typescript-cheatsheet)
-- [react-redux-typescript-guide](https://github.com/piotrwitek/react-redux-typescript-guide)
-
 ## 友情推荐
 
 [awesome-frontend](https://github.com/wangxingkang/awesome-frontend) 整理前端相关的博客、教程、库... 欢迎查阅
@@ -257,3 +245,14 @@ export default {
 | Github Issue                                      | 钉钉群                                                                                     | 微信群                                                                                   |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
 | [issues](https://github.com/pansyjs/utils/issues) | <img src="https://github.com/alitajs/alita/blob/master/public/dingding.png" width="100" /> | <img src="https://github.com/alitajs/alita/blob/master/public/wechat.png" width="100" /> |
+
+
+
+# 部分截图
+
+### 首页
+<img src="http://qny.stopry.com/admin_goods.png" width="1360" height="auto"/><br/>
+<img src="http://qny.stopry.com/admin_home.png" width="1360" height="auto"/><br/>
+<img src="http://qny.stopry.com/admin_orders.png" width="1360" height="auto"/><br/>
+<img src="http://qny.stopry.com/login.png" width="1360" height="auto"/><br/>
+
